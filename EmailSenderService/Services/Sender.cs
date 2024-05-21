@@ -643,13 +643,13 @@ namespace EmailSenderService.Services
             var emailMessage = new MimeMessage();
 
           
-            if (!validateConfig(message.Config))
+            if (validateConfig(message.Config))
             {
 
                 config = _emailConfiguration;
             }
 
-            emailMessage.From.Add(new MailboxAddress(config.From));
+            emailMessage.From.Add(new MailboxAddress("EMAIL SENDER",config.From));
 
             try
             {
@@ -739,7 +739,7 @@ namespace EmailSenderService.Services
             {
                 try
                 {
-                    client.Connect(config.SmtpServer, config.Port, true);
+                    client.Connect(config.SmtpServer, config.Port, MailKit.Security.SecureSocketOptions.Auto);
 
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(config.UserName, config.Password);

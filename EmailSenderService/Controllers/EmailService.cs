@@ -60,7 +60,7 @@ namespace EmailSenderService.Controllers
 
     [ApiController]
     [Route("api/v1/Services/[controller]/[action]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EmailServiceController : ControllerBase
     {
 
@@ -100,9 +100,56 @@ namespace EmailSenderService.Controllers
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<List<string>>> TestModule()
         {
-            var testList = new List<string>() { "Test", "Was", "Success" };
 
-            return await Task.FromResult(Ok(testList));
+
+            EmailPostRequest emailSendModel = new EmailPostRequest() 
+            { 
+             TO= new string[] {"nbsa@civicmdsg.com.ph" },
+              IsHtml= true,
+               BCC = new string[] {"nbsa@civicmdsg.com.ph"},
+                Body="<h2>test</h2>",
+                 CC=new string[] {"nbsa@civicmdsg.com.ph"},
+                  Subject="TEST EMAIL",
+                   EmailConfiguration=new EmailConfiguration()
+                   {
+                        From= "email.sender@civicmdsg.com.ph",
+                         Password= "j04AD1140",
+                          Port = 587,
+                           SmtpServer = "smtp.office365.com",
+                            UserName= "email.sender@civicmdsg.com.ph"
+
+
+                   }
+               
+            
+            
+            };
+
+            var forSend = new EmailMessage(emailSendModel);
+
+            try
+            {
+                sender.SendEmail(forSend);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Error: {e.Message.ToString()}");
+
+            }
+        }
+
+
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<string>>> TestRunning()
+        {
+
+
+            return Ok(new List<string>() { "You", "Are", "Good", "To", "Go" });
         }
 
 

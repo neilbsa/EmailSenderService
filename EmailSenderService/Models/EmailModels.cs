@@ -17,9 +17,9 @@ namespace EmailSenderService.Models
 
         public EmailMessage(EmailPostRequest req)
         {
-            ContactTO = req.TO?.Where(z=>z!=null).Select(z => new MailboxAddress(z?.Trim())).ToList();
-            ContactCC = req.CC?.Where(z => z != null).Select(z => new MailboxAddress(z?.Trim())).ToList();
-            ContactBCC = req.BCC?.Where(z => z != null).Select(z => new MailboxAddress(z?.Trim())).ToList();
+            ContactTO = req.TO?.Where(z=>z!=null).Select(z => new MailboxAddress("Notification",z?.Trim())).ToList();
+            ContactCC = req.CC?.Where(z => z != null).Select(z => new MailboxAddress("Notification", z?.Trim())).ToList();
+            ContactBCC = req.BCC?.Where(z => z != null).Select(z => new MailboxAddress("Notification", z?.Trim())).ToList();
             EmailSubject = req.Subject;
             EmailBody = req.Body;
             IsBodyHtml = req.IsHtml;
