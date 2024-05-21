@@ -12,9 +12,12 @@ namespace EmailSenderService.Models
     public class EmailMessage
     {
 
+        private readonly EmailConfiguration configuration;
 
-
-
+        public EmailMessage(EmailConfiguration emailConfig)
+        {
+            configuration = emailConfig;
+        }
         public EmailMessage(EmailPostRequest req)
         {
             ContactTO = req.TO?.Where(z=>z!=null).Select(z => new MailboxAddress("Notification",z?.Trim())).ToList();
@@ -25,6 +28,13 @@ namespace EmailSenderService.Models
             IsBodyHtml = req.IsHtml;
             Attachments = req?.Attachments;
             Config = req.EmailConfiguration;
+
+
+
+
+
+
+
         }
 
 

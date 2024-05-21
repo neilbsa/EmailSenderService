@@ -66,10 +66,12 @@ namespace EmailSenderService.Controllers
 
 
         private readonly ISender sender;
+        private readonly EmailConfiguration currentConfig;
 
-        public EmailServiceController(ISender sender)
+        public EmailServiceController(ISender sender,EmailConfiguration emailConfig)
         {
             this.sender = sender ?? throw new ArgumentNullException(nameof(sender));
+            this.currentConfig = emailConfig;
         }
 
         [HttpPost]
@@ -79,6 +81,10 @@ namespace EmailSenderService.Controllers
         public ActionResult SendEmail([FromForm] EmailPostRequest emailSendModel)
         {
             
+
+            emailSendModel.EmailConfiguration = emailSendModel.EmailConfiguration == null ? currentConfig : emailSendModel.EmailConfiguration;   
+
+
             var forSend = new EmailMessage(emailSendModel);
 
             try
